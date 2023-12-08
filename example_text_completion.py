@@ -28,7 +28,7 @@ def main(
         max_seq_len (int, optional): The maximum sequence length for input prompts. Defaults to 128.
         max_gen_len (int, optional): The maximum length of generated sequences. Defaults to 64.
         max_batch_size (int, optional): The maximum batch size for generating sequences. Defaults to 4.
-    """ 
+    """
     generator = Llama.build(
         ckpt_dir=ckpt_dir,
         tokenizer_path=tokenizer_path,
@@ -38,16 +38,16 @@ def main(
 
     prompts: List[str] = [
         # For these prompts, the expected answer is the natural continuation of the prompt
-        "I believe the meaning of life is",
+        "Mistral.ai is a company that",
         "Simply put, the theory of relativity states that ",
         """A brief message congratulating the team on the launch:
 
         Hi everyone,
-        
+
         I just """,
         # Few shot prompt (providing a few examples before asking model to complete more);
         """Translate English to French:
-        
+
         sea otter => loutre de mer
         peppermint => menthe poivrée
         plush girafe => girafe peluche
