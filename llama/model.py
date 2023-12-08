@@ -22,9 +22,11 @@ class ModelArgs:
     norm_eps: float = 1e-5
 
     max_batch_size: int = 32
-    max_seq_len: int = 2048
+    max_seq_len: int = 32768
 
     moe: Optional[Dict[str, int]] = None
+
+ROPE_THETA = 1e6
 
 
 class RMSNorm(torch.nn.Module):
@@ -73,7 +75,7 @@ class RMSNorm(torch.nn.Module):
         return output * self.weight
 
 
-def precompute_freqs_cis(dim: int, end: int, theta: float = 10000.0):
+def precompute_freqs_cis(dim: int, end: int, theta: float = ROPE_THETA):
     """
     Precompute the frequency tensor for complex exponentials (cis) with given dimensions.
 
