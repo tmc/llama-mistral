@@ -1,8 +1,14 @@
 # Extremely hacky implementation of Mixtral 8x7B
 
+## New: API access
+
+Try a much faster implementation of this model at https://app.fireworks.ai/
+
+## What is it?
+
 Mistral dropped the new MoE model this morning: https://twitter.com/MistralAI/status/1733150512395038967
 
-This is an attempt to hack original Llama codebase to load it. The implementation is very naive and slow.
+This is an attempt to hack the original Llama codebase to load it. The implementation is very naive and slow.
 
 You need 2 x 80Gb or 4 x 40Gb cards to load it.
 
@@ -10,6 +16,7 @@ Implementation:
 * remove model parallelism for simplicity
 * shard experts in the specified number of GPUs
 * reverse engineer MoE implementation based on https://arxiv.org/pdf/2211.15841.pdf (seems vanilla MoE)
+* ambiguity on the ordering of top_k and softmax in MoE. See https://twitter.com/dzhulgakov/status/1733330954348085439 for the discussion.
 
 **WARNING**: There's no official reference model code. This implementation might be wrong. At least the generation looks coherent which is a good sign :)
 
