@@ -111,10 +111,7 @@ class Llama:
         )
         tokenizer = Tokenizer(model_path=tokenizer_path)
         model_args.vocab_size = tokenizer.n_words
-        if torch.cuda.is_available():
-            torch.set_default_tensor_type(torch.cuda.HalfTensor)
-        else:
-            torch.set_default_tensor_type(torch.HalfTensor)
+        torch.set_default_dtype(torch.float16)
         model = Transformer(model_args)
         print(f"=== created Mixtral 8x7B. Experts spread over {num_gpus} GPUs ===")
         checkpoint = torch.load(ckpt_path, map_location="cpu")
