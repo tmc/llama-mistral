@@ -224,6 +224,7 @@ class Attention(nn.Module):
             bias=False,
         )
 
+
         self.cache_k = torch.zeros(
             (
                 args.max_batch_size,
@@ -240,6 +241,9 @@ class Attention(nn.Module):
                 self.head_dim,
             )
         )
+        if torch.cuda.is_available():
+            self.cache_k = self.cache_k.cuda()
+            self.cache_v = self.cache_v.cuda()
 
     def forward(
         self,
@@ -343,7 +347,10 @@ class MoE(nn.Module):
         **kwargs,
     ):
         super().__init__()
-        self.experts = nn.ModuleList([FeedForward(**kwargs).to(f"cuda:{i//num_shards}") for i in range(num_experts)])
+        if torch.cuda.is_available():
+            self.experts = nn.ModuleList([FeedForward(**kwargs).to(f"cuda:{i//4}") for i in range(num_shards)])
+        else:
+            self.experts = nn.ModuleList([FeedForward(**kwargs) for i in range(num_shards)])
         self.gate = nn.Linear(kwargs["dim"], num_experts, bias=False)
         self.num_experts_per_tok = num_experts_per_tok
 
